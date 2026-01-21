@@ -14,7 +14,10 @@ class DriveSubsystem : public frc2::SubsystemBase {
   void stop();
   void InitDefaultCommand();
   
-  frc::PIDController drivePID{
+  frc::PIDController leftDrivePID{
+    0.5,0,0
+  };
+  frc::PIDController rightDrivePID{
     0.5,0,0
   };
   /**
@@ -25,5 +28,5 @@ class DriveSubsystem : public frc2::SubsystemBase {
  private:
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
+  
 };
-

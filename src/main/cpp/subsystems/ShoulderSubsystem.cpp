@@ -15,28 +15,18 @@ ShoulderSubsystem::ShoulderSubsystem():
 // This method will be called once per scheduler run
 void ShoulderSubsystem::Periodic() {}
 
-double ShoulderSubsystem::readEncoder(double encodervalue){
+double ShoulderSubsystem::readEncoder(){
     return m_shoulderEncoder.GetPosition();
-    frc::SmartDashboard::PutNumber("arm encoder", m_shoulderEncoder.GetPosition());
-}
-
-double ShoulderSubsystem::getShoulderAngle(double encoder){
-
-    double encoderValue = (encoder/(60/22));
-
-    frc::SmartDashboard::PutNumber("fixed encoder", encoder);
-    frc::SmartDashboard::PutNumber("e/60/22", encoderValue);
-    double offset = 0.7042253521126;
-    return offset*360*encoderValue-10;
 }
 
 
 void ShoulderSubsystem::shoulderManual(double joystick){
-    double encoderDegrees = getShoulderAngle(m_shoulderEncoder.GetPosition());
-    if (encoderDegrees >= 115 && joystick > 0) { // top limit
+    double encoderDegrees = readEncoder();
+    frc::SmartDashboard::PutNumber("encoder", encoderDegrees);
+    if (encoderDegrees >= 90 && joystick < 0) { // top limit
         m_shoulderMotor.Set(0);
     }
-    else if (encoderDegrees <= 65 && joystick < 0) { // bottom limit
+    else if (encoderDegrees <= 10 && joystick > 0) { // bottom limit
         m_shoulderMotor.Set(0);
     }
     else {
@@ -45,22 +35,22 @@ void ShoulderSubsystem::shoulderManual(double joystick){
 }
 
 void ShoulderSubsystem::PickupPosition(){
-    double degrees = readEncoder(m_shoulderEncoder.GetPosition());
-    double volt = PickupPID.Calculate(units::degree_t(degrees), units::degree_t(11));
+    double degrees = readEncoder();
+    double volt = PickupPID.Calculate(units::degree_t(degrees), units::degree_t(25));
     frc::SmartDashboard::PutNumber("volt calc", volt);
     m_shoulderMotor.SetVoltage(units::volt_t{-volt});
 }
 
 void ShoulderSubsystem::ShootPosition(){
-    double degrees = readEncoder(m_shoulderEncoder.GetPosition());
-    double volt = ShootPID.Calculate(units::degree_t(degrees), units::degree_t(74));
+    double degrees = readEncoder();
+    double volt = ShootPID.Calculate(units::degree_t(degrees), units::degree_t(45));
     frc::SmartDashboard::PutNumber("shoot volt calc", volt);
-    m_shoulderMotor.SetVoltage(units::volt_t{-volt});
+    m_shoulderMotor.SetVoltage(units::volt_t{volt});
 }
 
 void ShoulderSubsystem::HomePosition(){
-    double degrees = readEncoder(m_shoulderEncoder.GetPosition());
-    double volt = HomePID.Calculate(units::degree_t(degrees), units::degree_t(200));
+    double degrees = readEncoder();
+    double volt = HomePID.Calculate(units::degree_t(degrees), units::degree_t(105));
     frc::SmartDashboard::PutNumber("volt calc", volt);
     m_shoulderMotor.SetVoltage(units::volt_t{-volt});
 }

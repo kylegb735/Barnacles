@@ -18,6 +18,7 @@ Robot::Robot() {}
  */
 void Robot::RobotPeriodic() {
   frc2::CommandScheduler::GetInstance().Run();
+
 }
 
 /**
@@ -56,7 +57,10 @@ void Robot::TeleopInit() {
 /**
  * This function is called periodically during operator control.
  */
-void Robot::TeleopPeriodic() {}
+void Robot::TeleopPeriodic() {
+  frc::SmartDashboard::PutNumber("arm encoder", m_container.m_shoulder.readEncoder());
+
+}
 
 /**
  * This function is called periodically during test mode.

@@ -16,9 +16,7 @@ DriveCommand::DriveCommand(DriveSubsystem* subsystem, frc::Joystick* joystick) :
 }
 
 // Called when the command is initially scheduled.
-void DriveCommand::Initialize() {
-  
-}
+void DriveCommand::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void DriveCommand::Execute() {

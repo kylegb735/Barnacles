@@ -26,6 +26,9 @@
 #include <frc2/command/InstantCommand.h>
 #include <iostream>
 #include <frc2/command/SwerveControllerCommand.h>
+#include <commands/DriveCommand.h>
+#include <commands/ManualShoulderCommand.h>
+#include <commands/ShootPositionCommand.h>
 
 RobotContainer::RobotContainer() {
   // Initialize all of your commands and subsystems here
@@ -45,8 +48,9 @@ void RobotContainer::ConfigureBindings() {
   // Schedule `ExampleMethodCommand` when the Xbox controller's B button is
   // pressed, cancelling on release.
   // frc2::JoystickButton()
-  
-  frc2::JoystickButton(&m_driverController, 1).OnTrue(GripCommand(&m_gripper).ToPtr());
+  // m_drive.SetDefaultCommand(DriveCommand(&m_drive, &m_driverController).ToPtr());
+  m_shoulder.SetDefaultCommand(ManualShoulderCommand(&m_shoulder, &m_driverController).ToPtr());
+  frc2::JoystickButton(&m_driverController, 2).OnTrue(ShootPositionCommand(&m_shoulder).ToPtr());
 }
 
 frc2::CommandPtr RobotContainer::GetAutonomousCommand() {

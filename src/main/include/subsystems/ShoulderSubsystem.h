@@ -24,8 +24,7 @@ class ShoulderSubsystem : public frc2::SubsystemBase {
    * Will be called periodically whenever the CommandScheduler runs.
    */
   void Periodic() override;
-  double readEncoder(double encodervalue);
-  double getShoulderAngle(double encoder);
+  double readEncoder();
   void shoulderManual(double joystick);
   void PickupPosition();
   void ShootPosition();
@@ -36,16 +35,18 @@ class ShoulderSubsystem : public frc2::SubsystemBase {
     0.14,0.0135,0,
     frc::TrapezoidProfile<units::degrees>::Constraints{
       units::angular_velocity::degrees_per_second_t(15),
-      units::angular_acceleration::degrees_per_second_squared_t(15)
+      units::angular_acceleration::degrees_per_second_squared_t(10)
     }
   };
+
   frc::ProfiledPIDController<units::degrees> ShootPID{
-    0.14,0.0135,0,
+    0.1,0.0,0,
     frc::TrapezoidProfile<units::degrees>::Constraints{
-      units::angular_velocity::degrees_per_second_t(15),
-      units::angular_acceleration::degrees_per_second_squared_t(15)
+      units::angular_velocity::degrees_per_second_t(5),
+      units::angular_acceleration::degrees_per_second_squared_t(5)
     }
   };
+
   frc::ProfiledPIDController<units::degrees> HomePID{
     0.14,0.0135,0,
     frc::TrapezoidProfile<units::degrees>::Constraints{
@@ -53,6 +54,8 @@ class ShoulderSubsystem : public frc2::SubsystemBase {
       units::angular_acceleration::degrees_per_second_squared_t(15)
     }
   };
+
+  
 
  private:
   // Components (e.g. motor controllers and sensors) should generally be

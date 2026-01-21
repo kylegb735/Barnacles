@@ -6,8 +6,8 @@
 
 #include <frc2/command/Command.h>
 #include <frc2/command/CommandHelper.h>
-#include <subsystems/ElbowSubsystem.h>
-#include <frc/Joystick.h>
+#include <subsystems/ShoulderSubsystem.h>
+
 /**
  * An example command.
  *
@@ -15,10 +15,13 @@
  * directly; this is crucially important, or else the decorator functions in
  * Command will *not* work!
  */
-class ManualElbowCommand
-    : public frc2::CommandHelper<frc2::Command, ManualElbowCommand> {
+class ShootPositionCommand
+    : public frc2::CommandHelper<frc2::Command, ShootPositionCommand> {
  public:
-  explicit ManualElbowCommand(ElbowSubsystem* m_elbow, frc::Joystick* m_joystick);
+  /* You should consider using the more terse Command factories API instead
+   * https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands
+   */
+  ShootPositionCommand(ShoulderSubsystem* m_shoulder);
 
   void Initialize() override;
 
@@ -28,7 +31,8 @@ class ManualElbowCommand
 
   bool IsFinished() override;
 
-  private:
-  ElbowSubsystem* m_elbow;
-  frc::Joystick* m_joystick;
+  bool shoulderDone = false;
+
+ private:
+  ShoulderSubsystem* m_shoulder;
 };

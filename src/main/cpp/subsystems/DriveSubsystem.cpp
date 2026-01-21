@@ -12,7 +12,7 @@
  
 //phoenix::motorcontrol::can::TalonFX leftMotor{4};
 //phoenix::motorcontrol::can::TalonFX rightMotor{2};
- TalonSRX leftMotor = {3};
+ TalonSRX leftMotor = {4};
  TalonSRX rightMotor = {2};
  double lastValLeft = 0;
  double lastValRight = 0;
@@ -35,11 +35,11 @@ DriveSubsystem::DriveSubsystem() {
  void DriveSubsystem::setspeed(double leftTarget,  double rightTarget){
     
 
-    double leftSpeed = drivePID.Calculate(lastValLeft, leftTarget);
-    leftMotor.Set(ControlMode::PercentOutput, leftSpeed);
+    double leftSpeed = leftDrivePID.Calculate(lastValLeft, leftTarget);
+    leftMotor.Set(ControlMode::PercentOutput, leftSpeed*0.97);
 
-    double rightSpeed = drivePID.Calculate(lastValRight, rightTarget);
-    rightMotor.Set(ControlMode::PercentOutput, rightSpeed);
+    double rightSpeed = rightDrivePID.Calculate(lastValRight, rightTarget);
+    rightMotor.Set(ControlMode::PercentOutput, rightSpeed*0.99);
 
 
     frc::SmartDashboard::PutNumber("leftSpeed", leftSpeed);

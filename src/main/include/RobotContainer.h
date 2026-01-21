@@ -9,7 +9,6 @@
 
 #include "Constants.h"
 #include "subsystems/DriveSubsystem.h"
-#include "subsystems/ElbowSubsystem.h"
 #include "subsystems/ShoulderSubsystem.h"
 #include "subsystems/GripperSubsystem.h"
 
@@ -31,7 +30,6 @@
 #include "frc/DigitalInput.h"
 #include "subsystems/DriveSubsystem.h"
 #include "subsystems/shoulderSubsystem.h"
-#include <subsystems/ElbowSubsystem.h>
 #include <commands/GripCommand.h>
 
 
@@ -49,16 +47,15 @@ class RobotContainer {
 
   frc2::CommandPtr GetAutonomousCommand();
 
+  DriveSubsystem m_drive;
+  ShoulderSubsystem m_shoulder;
+  Gripper m_gripper;
  private:
   // Replace with CommandPS4Controller or CommandJoystick if needed
   frc::Joystick m_driverController{0};
   frc::Joystick m_copilotController{1};
 
   // The robot's subsystems are defined here...
-  DriveSubsystem m_drive;
-  ElbowSubsystem m_elbow;
-  ShoulderSubsystem m_shoulder;
-  Gripper m_gripper;
 
   void ConfigureBindings();
 };

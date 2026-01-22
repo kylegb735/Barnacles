@@ -36,9 +36,9 @@ void ShoulderSubsystem::shoulderManual(double joystick){
 
 void ShoulderSubsystem::PickupPosition(){
     double degrees = readEncoder();
-    double volt = PickupPID.Calculate(units::degree_t(degrees), units::degree_t(25));
+    double volt = PickupPID.Calculate(units::degree_t(degrees), units::degree_t(13));
     frc::SmartDashboard::PutNumber("volt calc", volt);
-    m_shoulderMotor.SetVoltage(units::volt_t{-volt});
+    m_shoulderMotor.SetVoltage(units::volt_t{volt});
 }
 
 void ShoulderSubsystem::ShootPosition(){
@@ -50,9 +50,9 @@ void ShoulderSubsystem::ShootPosition(){
 
 void ShoulderSubsystem::HomePosition(){
     double degrees = readEncoder();
-    double volt = HomePID.Calculate(units::degree_t(degrees), units::degree_t(105));
+    double volt = HomePID.Calculate(units::degree_t(degrees), units::degree_t(90));
     frc::SmartDashboard::PutNumber("volt calc", volt);
-    m_shoulderMotor.SetVoltage(units::volt_t{-volt});
+    m_shoulderMotor.SetVoltage(units::volt_t{volt});
 }
 
 void ShoulderSubsystem::Stop(){

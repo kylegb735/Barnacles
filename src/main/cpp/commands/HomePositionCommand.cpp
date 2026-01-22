@@ -1,0 +1,35 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
+#include "commands/HomePositionCommand.h"
+
+HomePositionCommand::HomePositionCommand(ShoulderSubsystem* shoulderSubsystem) : m_shoulder(shoulderSubsystem) {
+  // Use addRequirements() here to declare subsystem dependencies.
+  AddRequirements(shoulderSubsystem);
+}
+
+// Called when the command is initially scheduled.
+void HomePositionCommand::Initialize() {
+  m_shoulder->HomePID.Reset(units::degree_t(m_shoulder->readEncoder()));
+  shoulderDone = false; 
+}
+
+// Called repeatedly when this Command is scheduled to run
+void HomePositionCommand::Execute() {
+  m_shoulder->HomePosition();
+
+  double shoulderDegree = m_shoulder->readEncoder();
+  if(shoulderDegree <= 91 && shoulderDegree >= 89){
+    shoulderDone = true;
+    Cancel();
+  }
+}
+
+// Called once the command ends or is interrupted.
+void HomePositionCommand::End(bool interrupted) {}
+
+// Returns true when the command should end.
+bool HomePositionCommand::IsFinished() {
+  return false;
+}

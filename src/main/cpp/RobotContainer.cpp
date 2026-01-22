@@ -29,12 +29,21 @@
 #include <commands/DriveCommand.h>
 #include <commands/ManualShoulderCommand.h>
 #include <commands/ShootPositionCommand.h>
+#include <commands/PickupPositionCommand.h>
+#include <commands/HomePositionCommand.h>
+#include <frc2/command/Commands.h>
 
 RobotContainer::RobotContainer() {
   // Initialize all of your commands and subsystems here
 
   // Configure the button bindings
   ConfigureBindings();
+
+    m_gripper.SetDefaultCommand(frc2::RunCommand(
+      [this] {
+        m_gripper.Compress();    
+      },
+      {&m_gripper}));
 }
 
 void RobotContainer::ConfigureBindings() {
@@ -48,9 +57,12 @@ void RobotContainer::ConfigureBindings() {
   // Schedule `ExampleMethodCommand` when the Xbox controller's B button is
   // pressed, cancelling on release.
   // frc2::JoystickButton()
-  // m_drive.SetDefaultCommand(DriveCommand(&m_drive, &m_driverController).ToPtr());
-  m_shoulder.SetDefaultCommand(ManualShoulderCommand(&m_shoulder, &m_driverController).ToPtr());
-  frc2::JoystickButton(&m_driverController, 2).OnTrue(ShootPositionCommand(&m_shoulder).ToPtr());
+  m_drive.SetDefaultCommand(DriveCommand(&m_drive, &m_driverController).ToPtr());
+  m_shoulder.SetDefaultCommand(ManualShoulderCommand(&m_shoulder, &m_copilotController).ToPtr());
+  frc2::JoystickButton(&m_copilotController, 2).OnTrue(ShootPositionCommand(&m_shoulder).ToPtr());
+  frc2::JoystickButton(&m_copilotController, 1).OnTrue(PickupPositionCommand(&m_shoulder).ToPtr());
+  frc2::JoystickButton(&m_copilotController, 4).OnTrue(HomePositionCommand(&m_shoulder).ToPtr());
+  frc2::JoystickButton(&m_copilotController, 3).OnTrue(frc2::cmd::RunOnce([this]{m_gripper.Grip();}));
 }
 
 frc2::CommandPtr RobotContainer::GetAutonomousCommand() {

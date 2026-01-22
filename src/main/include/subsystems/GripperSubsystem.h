@@ -11,7 +11,7 @@
 class Gripper : public frc2::SubsystemBase {
  public:
   Gripper();
-  frc::Solenoid m_solenoid{frc::PneumaticsModuleType::CTREPCM, 1};
+  frc::Solenoid m_solenoid{frc::PneumaticsModuleType::CTREPCM, 0};
   frc::Compressor m_compressor{0, frc::PneumaticsModuleType::CTREPCM};
 
   /**
